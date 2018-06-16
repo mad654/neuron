@@ -3,7 +3,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @TODO split into INPUT, OUTPUT, HIDDEN
+ * @TODO Currently we pull values -> refator to push values?
  */
 public class SimpleNeuron implements Neuron {
     private List<Neuron> input;
