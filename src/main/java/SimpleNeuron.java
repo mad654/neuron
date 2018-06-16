@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @TODO split into INPUT, OUTPUT, HIDDEN
+ */
 public class SimpleNeuron implements Neuron {
     private List<Neuron> input;
     private List<Neuron> output;
@@ -27,20 +30,19 @@ public class SimpleNeuron implements Neuron {
     }
 
     public void send(long value) {
+        // if we act as input we have store the original value
         this.value = value;
-
-        for (Iterator<Neuron> i = this.output.iterator(); i.hasNext();) {
-            i.next().send(value());
-         }
     }
 
     public long value() {
         long current = 0;
 
+        // if we act as input we have to return the original value
         if (this.input.size() == 0) {
             return applyThreshold(this.value);
         }
 
+        // if we act as hidden and output we have to sum our inputs
         for (Iterator<Neuron> i = this.input.iterator(); i.hasNext();) {
             current += i.next().value();
         }
