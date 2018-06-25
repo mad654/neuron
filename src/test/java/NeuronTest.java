@@ -75,6 +75,8 @@ public class NeuronTest {
         assertEquals(1800, output.value()); // 1,8
     }
 
+    // TODO sigmod activator
+
     private Neuron sut() {
         List<Long> numbers = new ArrayList();
         numbers.add(new Long(1000));
