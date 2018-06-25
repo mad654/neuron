@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -59,7 +61,27 @@ public class NeuronTest {
         assertEquals(0, output.value());
     }
 
+    @Test public void value_outputWithWightConnected_sends07408() {
+        List<Long> numbers = new ArrayList();
+        numbers.add(new Long(900)); // 0,9
+        RandomNumberGenerator generator = new RandomNumberGeneratorStub(numbers);
+        Neuron input = this.sut(generator);
+        Neuron output = this.sut(generator);
+
+        input.connectOutput(output);
+
+        input.send(2000); // 2
+
+        assertEquals(1800, output.value()); // 1,8
+    }
+
     private Neuron sut() {
-        return new SimpleNeuron();
+        List<Long> numbers = new ArrayList();
+        numbers.add(new Long(1000));
+        return this.sut(new RandomNumberGeneratorStub(numbers));
+    }
+
+    private Neuron sut(RandomNumberGenerator generator) {
+        return new SimpleNeuron(generator);
     }
 }

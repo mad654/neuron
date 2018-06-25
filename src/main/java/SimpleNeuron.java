@@ -6,48 +6,67 @@ import java.util.List;
  * @TODO Currently we pull values -> refator to push values?
  */
 public class SimpleNeuron implements Neuron {
-    private List<Neuron> input;
-    private List<Neuron> output;
+    private RandomNumberGenerator generator;
+    private List<Terminal> input;
+    private List<Terminal> output;
     private long value = 0;
 
-    public SimpleNeuron() {
+    public SimpleNeuron(RandomNumberGenerator generator) {
+        this.generator = generator;
         this.input = new ArrayList();
         this.output = new ArrayList();
     }
 
     public void connectInput(Neuron other) {
-        if (!this.input.contains(other)) {
-            this.input.add(other);
+        if (!this.isConnectedNeuron(this.input, other)) {
+            this.input.add(new SimpleTerminal(other, this.generator));
             other.connectOutput(this);
         }
     }
 
     public void connectOutput(Neuron other) {
-        if (!this.output.contains(other)) {
-            this.output.add(other);
+        if (!this.isConnectedNeuron(this.output, other)) {
+            this.output.add(new SimpleTerminal(other, this.generator));
             other.connectInput(this);
         }
     }
 
+    private boolean isConnectedNeuron(List list, Neuron other) {
+        for (Iterator<Terminal> i = list.iterator(); i.hasNext();) {
+            if (i.next().equalsNeuron(other)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    // set input
     public void send(long value) {
         // if we act as input we have store the original value
         this.value = value;
+        this.notifyValueChanged();
+    }
+
+    public void onValueChanged() {
+        this.value = 0;
+
+        for (Iterator<Terminal> i= this.input.iterator(); i.hasNext();) {
+            this.value += i.next().value();
+        }
+
+        this.value = this.applyThreshold(this.value);
+        this.notifyValueChanged();
+    }
+
+    private void notifyValueChanged() {
+        for (Iterator<Terminal> i= this.output.iterator(); i.hasNext();) {
+            i.next().onValueChanged();
+        }
     }
 
     public long value() {
-        long current = 0;
-
-        // if we act as input we have to return the original value
-        if (this.input.size() == 0) {
-            return applyThreshold(this.value);
-        }
-
-        // if we act as hidden and output we have to sum our inputs
-        for (Iterator<Neuron> i = this.input.iterator(); i.hasNext();) {
-            current += i.next().value();
-        }
-
-        return applyThreshold(current);
+        return this.value;
     }
 
     private long applyThreshold(long current) {
@@ -58,3 +77,4 @@ public class SimpleNeuron implements Neuron {
         return current;
     }
 }
+

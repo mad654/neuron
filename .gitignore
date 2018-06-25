@@ -60,3 +60,8 @@ proguard/
 .gradle/
 build/
 bin/
+
+# vim
+tags
+tags.temp
+tags.lock
