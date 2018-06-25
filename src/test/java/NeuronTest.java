@@ -75,6 +75,7 @@ public class NeuronTest {
         assertEquals(1800, output.value()); // 1,8
     }
 
+    // TODO use double instaead of long
     // TODO sigmod activator
 
     private Neuron sut() {
