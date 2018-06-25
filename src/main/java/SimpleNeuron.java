@@ -2,9 +2,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * @TODO Currently we pull values -> refator to push values?
- */
 public class SimpleNeuron implements Neuron {
     private RandomNumberGenerator generator;
     private List<Terminal> input;
@@ -41,11 +38,15 @@ public class SimpleNeuron implements Neuron {
         return false;
     }
 
-    // set input
     public void send(long value) {
-        // if we act as input we have store the original value
         this.value = value;
         this.notifyValueChanged();
+    }
+
+    private void notifyValueChanged() {
+        for (Iterator<Terminal> i= this.output.iterator(); i.hasNext();) {
+            i.next().onValueChanged();
+        }
     }
 
     public void onValueChanged() {
@@ -59,22 +60,16 @@ public class SimpleNeuron implements Neuron {
         this.notifyValueChanged();
     }
 
-    private void notifyValueChanged() {
-        for (Iterator<Terminal> i= this.output.iterator(); i.hasNext();) {
-            i.next().onValueChanged();
-        }
-    }
-
-    public long value() {
-        return this.value;
-    }
-
     private long applyThreshold(long current) {
         if (current < 1000) {
             return 0;
         }
 
         return current;
+    }
+
+    public long value() {
+        return this.value;
     }
 }
 
