@@ -78,7 +78,7 @@ public class NeuronTest {
     @Test public void value_valueAfterOutputErrorBack_valueReturns1() {
         Neuron input = this.sut();
         Neuron output = this.sut();
-        output.connectInput(input);
+        input.connectOutput(output);
 
         // first send a signal
         input.send(1000);
