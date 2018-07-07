@@ -20,4 +20,8 @@ public class SimpleTerminal implements Terminal {
     public boolean equalsNeuron(Neuron other) {
         return this.neuron.equals(other);
     }
+
+    public void onError(long value) {
+        this.neuron.onError(value * this.weight);
+    }
 }

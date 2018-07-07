@@ -74,6 +74,24 @@ public class NeuronTest {
 
         assertEquals(1800, output.value()); // 1,8
     }
+    
+    @Test public void value_valueAfterOutputErrorBack_valueReturns1() {
+        Neuron input = this.sut();
+        Neuron output = this.sut();
+        output.connectInput(input);
+
+        // first send a signal
+        input.send(1000);
+        long outputOrg = output.value();
+        assertEquals(1000, outputOrg);
+
+        // propagate error back
+        output.onError(500);
+
+        // send signal again, value should now be different
+        input.send(1000);
+        assertNotEquals(outputOrg, output.value());
+    }
 
     // TODO use double instaead of long
     // TODO sigmod activator

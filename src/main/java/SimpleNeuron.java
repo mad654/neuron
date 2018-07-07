@@ -43,6 +43,13 @@ public class SimpleNeuron implements Neuron {
         this.notifyValueChanged();
     }
 
+    public void onError(long value) {
+        for (Iterator<Terminal> i= this.input.iterator(); i.hasNext();) {
+            i.next().onError(value);
+        }
+    }
+
+
     private void notifyValueChanged() {
         for (Iterator<Terminal> i= this.output.iterator(); i.hasNext();) {
             i.next().onValueChanged();
