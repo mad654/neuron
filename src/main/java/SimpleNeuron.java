@@ -14,23 +14,25 @@ public class SimpleNeuron implements Neuron {
         this.output = new ArrayList();
     }
 
-    public void connectInput(Neuron other) {
-        if (!this.isConnectedNeuron(this.input, other)) {
-            this.input.add(new SimpleTerminal(other, this.generator));
-            other.connectOutput(this);
-        }
-    }
-
     public void connectOutput(Neuron other) {
-        if (!this.isConnectedNeuron(this.output, other)) {
-            this.output.add(new SimpleTerminal(other, this.generator));
-            other.connectInput(this);
-        }
+        this.connectOutput((SimpleNeuron) other);
     }
 
-    private boolean isConnectedNeuron(List list, Neuron other) {
+    private void connectOutput(SimpleNeuron other) {
+        if (this.isConnectedOutput(other)) {
+            // TODO: throw exception or support multiple connections between same neurons?
+            return;
+        }
+
+        Terminal terminal = new SimpleTerminal(this, other, this.generator);
+        this.output.add(terminal);
+        other.input.add(terminal);
+    }
+
+    private boolean isConnectedOutput(Neuron other) {
+        List list = this.output;
         for (Iterator<Terminal> i = list.iterator(); i.hasNext();) {
-            if (i.next().equalsNeuron(other)) {
+            if (i.next().outputEquals(other)) {
                 return true;
             }
         }
