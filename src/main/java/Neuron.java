@@ -1,3 +1,4 @@
+// TODO: split into INPUT/OUTPUT Neuron ??
 public interface Neuron {
     public void connectOutput(Neuron other);
     public void onValueChanged();
