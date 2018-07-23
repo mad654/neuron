@@ -75,7 +75,7 @@ public class NeuronTest {
         assertEquals(1800, output.value()); // 1,8
     }
     
-    @Test public void value_valueAfterOutputErrorBack_valueReturns1() {
+    @Test public void value_valueAfterOutputErrorBack_valueIsDifferentThanBefore() {
         Neuron input = this.sut();
         Neuron output = this.sut();
         input.connectOutput(output);
